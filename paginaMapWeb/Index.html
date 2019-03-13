@@ -67,7 +67,15 @@
 </head>
 <body>
 
-  
+
+    <input hidden="hidden" id="originid" class="controls" type="text">
+
+    <input hidden="hidden" id="destinationid" class="controls" type="text">
+
+    <input hidden="hidden" id="kms" class="controls" type="text">
+    <input hidden="hidden" id="minutos" class="controls" type="text">
+
+
     <div style="display: none">
 
 
@@ -76,6 +84,7 @@
 
         <input id="destination-input" class="controls" type="text"
                placeholder="Introduza o Destino">
+
 
         <div hidden="hidden" id="mode-selector" class="controls">
             <input type="radio" name="type" id="changemode-walking">
@@ -106,6 +115,39 @@
 
 
 
+        function getOrigin() {
+            return document.getElementById('origin-input').value;
+
+        };
+
+        function getDestination() {
+            return document.getElementById('destination-input').value;
+
+        };
+
+
+
+        function getOriginPlaceId() {
+            return document.getElementById('originid').value;
+
+        };
+
+        function getDestinationPlaceId() {
+            return document.getElementById('destinationid').value;
+
+        };
+
+        function getMinutos() {
+            return document.getElementById('minutos').value;
+
+        };
+
+        function getKms() {
+            return document.getElementById('kms').value;
+
+        };
+
+        
 
         function initMap() {
 
@@ -428,7 +470,7 @@
                 var place = autocomplete.getPlace();
 
                 if (!place.place_id) {
-                    window.alert('Please select an option from the dropdown list.');
+                    window.alert('Selecione um valor da lista pendente.');
                     return;
                 }
                 if (mode === 'ORIG') {
@@ -451,6 +493,11 @@
                 return;
             }
             var me = this;
+
+
+            document.getElementById('originid').value = this.originPlaceId;
+            document.getElementById('destinationid').value = this.destinationPlaceId;
+
 
             this.directionsService.route(
                 {
@@ -476,15 +523,19 @@
                         infowindow.setContent(response.routes[0].legs[0].duration.text + "<br>" + response.routes[0].legs[0].distance.text);
                         infowindow.open(me.map);
 
+
+                        document.getElementById('minutos').value = response.routes[0].legs[0].duration.text;
+                        document.getElementById('kms').value = response.routes[0].legs[0].distance.text;
+
+
                     } else {
-                        window.alert('Directions request failed due to ' + status);
+                        window.alert('Não é possível estabelecer um caminho até lá.');
                     }
                 });
         };
 
 
-
-
+     
     </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXnSw7uj9P9oZIc_7c74peSmkmkYU1O5s&libraries=places&callback=initMap"
@@ -493,7 +544,7 @@
 
     </script>
 
-  
+
 
 
 </body>
